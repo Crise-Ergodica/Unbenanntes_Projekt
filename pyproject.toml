@@ -30,3 +30,11 @@ extend-select = ["I"]  # Add import sorting
 known-first-party = ["Modulo"]
 force-sort-within-sections = true
 
+[project.optional-dependencies]
+dev = [
+    "jupyter",
+    "notebook",
+]
+
+[tool.setuptools]
+packages = ["modulo", "modulo.modeling"]
