@@ -11,8 +11,6 @@
 """
 
 import pandas as pd
-from pycaret.classification import *
-from pycaret.regression import *
 
 """
 ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────        
@@ -52,7 +50,13 @@ def treino(caminho_csv, target, nome, task='regression', algoritmo='gbr', itera�
     if task not in ['regression', 'classification']:
         raise ValueError(f"task deve ser 'regression' ou 'classification', '{task}' não é uma opção.")
 
-    # Carrega dados (aceita caminho para CSV ou DataFrame)
+    # Importa o módulo correto baseado na task
+    if task == 'regression':
+        from pycaret.regression import setup, create_model, tune_model, finalize_model, save_model
+    else:
+        from pycaret.classification import setup, create_model, tune_model, finalize_model, save_model
+
+    # Carrega dados
     if isinstance(caminho_csv, pd.DataFrame):
         data_nome = caminho_csv.copy()
     else:
@@ -70,7 +74,7 @@ def treino(caminho_csv, target, nome, task='regression', algoritmo='gbr', itera�
     # Otimiza modelo
     tuned = tune_model(modelo, n_iter=iterações)
 
-    # Finaliza (treina em tudo)
+    # Finaliza
     final = finalize_model(tuned)
 
     # Salva modelo
