@@ -1,10 +1,15 @@
-# Unbenanntes Projekt
+```
+╭╮╱╭╮╱╱╭╮╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╭╮╱╱╱╱╱╱╱╭━━━╮╱╱╱╱╱╱╱╱╭╮╱╭╮ 
+┃┃╱┃┃╱╱┃┃╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╭╯╰╮╱╱╱╱╱╱┃╭━╮┃╱╱╱╱╭╮╱╱┃┃╭╯╰╮
+┃┃╱┃┣━╮┃╰━┳━━┳━╮╭━━┳━╮╭━╋╮╭╋━━┳━━╮┃╰━╯┣━┳━━╋╋━━┫┃┣╮╭╯
+┃┃╱┃┃╭╮┫╭╮┃┃━┫╭╮┫╭╮┃╭╮┫╭╮┫┃┃┃━┫━━┫┃╭━━┫╭┫╭╮┣┫┃━┫╰╯┫┃
+┃╰━╯┃┃┃┃╰╯┃┃━┫┃┃┃╭╮┃┃┃┃┃┃┃╰┫┃━╋━━┃┃┃╱╱┃┃┃╰╯┃┃┃━┫╭╮┫╰╮
+╰━━━┻╯╰┻━━┻━━┻╯╰┻╯╰┻╯╰┻╯╰┻━┻━━┻━━╯╰╯╱╱╰╯╰━━┫┣━━┻╯╰┻━╯
+╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╭╯┃
+╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╰━╯**
 
-<a target="_blank" href="https://cookiecutter-data-science.drivendata.org/">
-    <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
-</a>
-
-inferno em forma de arquivo python usado para estudos
+„ʇǝʇɥɔᴉɹǝƃ ɹᴉʍ ǝᴉʍ ʇʇo⅁ ʇǝʇɥɔᴉɹ ʇlǝzuǝuɹǝʇS ɯɹǝq∩„
+```
 
 ## Project Organization
 
@@ -58,4 +63,4 @@ inferno em forma de arquivo python usado para estudos
 ```
 
 --------
-
+_Aurora Drumond Costa Magalhães_

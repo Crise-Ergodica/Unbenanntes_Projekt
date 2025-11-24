@@ -1,3 +1,5 @@
+scikit-plot
+pycaret
 ipython
 jupyterlab
 matplotlib
