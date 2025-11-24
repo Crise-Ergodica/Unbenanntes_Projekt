@@ -125,4 +125,33 @@ Servem para treinar, testar e criar matriz de confusão.
 ```
 
 --------
-_Aurora Drumond Costa Magalhães_
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+
+## 👤 AutorA
+
+**Aurora Drumond Costa Magalhães**
+
+- GitHub: [@Crise-Ergodica](https://github.com/Crise-Ergodica)
+- Email: gdcm10@gmail.com
+
+---
+
+## 🙏 Agradecimentos
+
+- [PyCaret](https://pycaret.org/) pela incrível biblioteca de AutoML
+- [Cookiecutter Data Science](https://drivendata.github.io/cookiecutter-data-science/) pela estrutura de projeto
+- Comunidade Python pelo suporte constante
+
+---
+
+<div align="center">
+
+**⭐ Se este projeto te ajudou, considere dar uma estrela!**
+
+*Feito com ☕ e muito código em Python*
+
+</div>
