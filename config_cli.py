@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Unbenanntes Projekt - Interactive Configuration CLI
+υивєиαиитєѕ ρяσנєкт - Interactive Configuration CLI
 Usando Rich para criar uma interface terminal artística
 """
 
@@ -514,3 +514,4 @@ if __name__ == "__main__":
         console.print("\n[yellow]⚠️ Operação interrompida pelo usuário.[/yellow]")
     except Exception as e:
         console.print(f"\n[bold red]❌ Erro: {e}[/bold red]")
+
