@@ -1,0 +1,75 @@
+site_name: Unbenanntes Projekt
+site_description: 'Biblioteca Python para automatização de workflows de Machine Learning'
+site_author: 'Aurora Drumond Costa Magalhães'
+site_url: 'https://crise-ergodica.github.io/Unbenanntes_Projekt'
+
+repo_name: 'Crise-Ergodica/Unbenanntes_Projekt'
+repo_url: 'https://github.com/Crise-Ergodica/Unbenanntes_Projekt'
+
+theme:
+  name: material
+  language: pt-BR
+  palette:
+    # Modo claro
+    - scheme: default
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/brightness-7
+        name: Modo escuro
+    # Modo escuro
+    - scheme: slate
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/brightness-4
+        name: Modo claro
+
+  font:
+    text: JetBrains Mono
+    code: Fira Code
+
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - attr_list
+  - md_in_html
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+extra_css:
+  - stylesheets/extra.css
+
+nav:
+  - Início: index.md
+  - Sobre o Projeto: sobre.md
+  - Guia de Instalação: instalacao.md
+  - Estrutura: estrutura.md
+  - Módulos:
+    - Visão Geral: modulos/index.md
+    - Treino: modulos/treino.md
+    - Teste & Avaliação: modulos/teste.md
+    - Dataset: modulos/dataset.md
+    - Features: modulos/features.md
+    - Plots: modulos/plots.md
+  - Exemplos: exemplos.md
+  - API Reference: api.md
+  - Contribuindo: contribuindo.md
