@@ -1,0 +1,9 @@
+/* Esconde a barra lateral de navegação */
+.md-sidebar--primary {
+  display: none;
+}
+/* Centraliza o texto para leitura estilo livro */
+.md-content {
+  margin: 0 auto;
+  max-width: 800px;
+}
