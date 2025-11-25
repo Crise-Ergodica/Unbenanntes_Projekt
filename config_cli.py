@@ -17,18 +17,13 @@ from pathlib import Path
 
 console = Console()
 
-BANNER = r"""
- _   _       _                             _            ____            _      _    _   
-| | | |_ __ | |__   ___ _ __   __ _ _ __ | |_ ___ ___ |  _ \ _ __ ___ (_) ___| | _| |_ 
-| | | | '_ \| '_ \ / _ \ '_ \ / _` | '_ \| __/ _ / __|| |_) | '__/ _ \| |/ _ \ |/ / __|
-| |_| | | | | |_) |  __/ | | | (_| | | | | ||  __\__ \|  __/| | | (_) | |  __/   <| |_ 
- \___/|_| |_|_.__/ \___|_| |_|\__,_|_| |_|\__\___|___/|_|   |_|  \___// |\___|_|\_\\__|
-                                                                      |__/               
-                        ___       ___       ___   
-                       / _ \     / _ \     / _ \  
-                      | | | |   | | | |   | | | | 
-                      | |_| | _ | |_| | _ | |_| | 
-                       \___/ (_) \___/ (_) \___/  
+BANNER = """
+╦ ╦┌┐┌┌┐ ┌─┐┌┐┌┌─┐┌┐┌┌┐┌┌┬┐┌─┐┌─┐  ╔═╗┬─┐┌─┐ ┬┌─┐┬┌─┌┬┐
+║ ║│││├┴┐├┤ │││├─┤│││││││ │├┤ └─┐  ╠═╝├┬┘│ │ │├┤ │┴┐ │ 
+╚═╝┘└┘└─┘└─┘┘└┘┴ ┴┘└┘┘└┘ ┴ └─┘└─┘  ╩  ┴└─└─┘└┘└─┘┴ ┴ ┴ 
+        ╔═╗ ╔═╗ ╔═╗   ┌┬┐┬  
+        ║ ║ ║ ║ ║ ║   ││││  
+        ╚═╝ ╚═╝ ╚═╝   ┴ ┴┴─┘
 """
 
 
@@ -36,15 +31,13 @@ def show_banner():
     """Exibe o banner ASCII artístico"""
     console.clear()
     
-    from rich.style import Style
     banner_lines = BANNER.split('\n')
-    
-    colors = ["bright_cyan", "cyan", "blue", "bright_blue", "bright_magenta", "magenta"]
+    colors = ["bright_cyan", "cyan", "bright_blue", "blue", "bright_magenta", "magenta"]
     
     for i, line in enumerate(banner_lines):
         if line.strip():
             color = colors[i % len(colors)]
-            console.print(line, style=f"bold {color}")
+            console.print(line, style=f"bold {color}", justify="center")
     
     console.print(
         Panel(
@@ -72,6 +65,9 @@ def get_data_config():
     
     try:
         import pandas as pd
+        from rich.layout import Layout
+        from rich.columns import Columns
+        
         df = pd.read_csv(data_path)
         
         console.print("\n")
@@ -79,49 +75,81 @@ def get_data_config():
             "[bold green]✓ Dataset carregado com sucesso![/bold green]",
             border_style="green"
         ))
-        
-        info_table = Table(title="📊 Informações do Dataset", box=box.ROUNDED, border_style="magenta")
-        info_table.add_column("Métrica", style="yellow", justify="right")
-        info_table.add_column("Valor", style="cyan", justify="left")
-        
-        info_table.add_row("Linhas", f"{df.shape[0]:,}")
-        info_table.add_row("Colunas", f"{df.shape[1]:,}")
-        info_table.add_row("Memória", f"{df.memory_usage(deep=True).sum() / 1024**2:.2f} MB")
-        info_table.add_row("Valores Nulos", f"{df.isnull().sum().sum():,}")
-        
-        console.print(info_table)
         console.print()
         
-        preview_table = Table(title="👁️ Preview dos Dados (5 primeiras linhas)", box=box.SIMPLE, border_style="blue")
+        info_table = Table(title="📊 Informações Gerais", box=box.ROUNDED, border_style="bright_magenta", show_header=False)
+        info_table.add_column("Métrica", style="bright_yellow", justify="right")
+        info_table.add_column("Valor", style="bright_cyan", justify="left")
         
-        for col in df.columns[:8]:  # Mostrar até 8 colunas
-            preview_table.add_column(col, style="white", overflow="fold")
+        info_table.add_row("📏 Linhas", f"[bold]{df.shape[0]:,}[/bold]")
+        info_table.add_row("📐 Colunas", f"[bold]{df.shape[1]:,}[/bold]")
+        info_table.add_row("💾 Memória", f"[bold]{df.memory_usage(deep=True).sum() / 1024**2:.2f}[/bold] MB")
+        info_table.add_row("⚠️ Nulos", f"[bold red]{df.isnull().sum().sum():,}[/bold red]")
+        info_table.add_row("🔢 Duplicadas", f"[bold yellow]{df.duplicated().sum():,}[/bold yellow]")
+        
+        preview_table = Table(title="👁️ Preview (5 linhas)", box=box.SIMPLE, border_style="bright_blue", show_lines=False)
+        
+        max_cols_preview = min(6, len(df.columns))
+        for col in df.columns[:max_cols_preview]:
+            preview_table.add_column(col[:12], style="white", overflow="fold", max_width=15)
         
         for idx, row in df.head(5).iterrows():
-            preview_table.add_row(*[str(val)[:20] for val in row.values[:8]])
+            preview_table.add_row(*[str(val)[:12] for val in row.values[:max_cols_preview]])
         
-        console.print(preview_table)
+        console.print(Columns([info_table, preview_table], equal=False, expand=True))
         console.print()
         
-        types_table = Table(title="🔍 Tipos de Dados das Colunas", box=box.ROUNDED, border_style="green")
-        types_table.add_column("Coluna", style="cyan")
-        types_table.add_column("Tipo", style="yellow")
-        types_table.add_column("Não-Nulos", style="green")
-        types_table.add_column("Únicos", style="magenta")
+        types_table = Table(
+            title=f"🔍 Análise Completa das {len(df.columns)} Colunas", 
+            box=box.ROUNDED, 
+            border_style="bright_green",
+            show_lines=True
+        )
+        types_table.add_column("#", style="dim", justify="center", width=4)
+        types_table.add_column("Nome da Coluna", style="bright_cyan", overflow="fold")
+        types_table.add_column("Tipo", style="bright_yellow", justify="center")
+        types_table.add_column("Não-Nulos", style="bright_green", justify="right")
+        types_table.add_column("Nulos", style="bright_red", justify="right")
+        types_table.add_column("Únicos", style="bright_magenta", justify="right")
+        types_table.add_column("% Únicos", style="cyan", justify="right")
         
-        for col in df.columns[:15]:  # Mostrar até 15 colunas
-            dtype_color = "green" if df[col].dtype in ['int64', 'float64'] else "yellow"
+        for idx, col in enumerate(df.columns, 1):
+            dtype = str(df[col].dtype)
+            non_null = df[col].notna().sum()
+            null_count = df[col].isnull().sum()
+            unique_count = df[col].nunique()
+            unique_pct = (unique_count / len(df) * 100) if len(df) > 0 else 0
+            
+            if df[col].dtype in ['int64', 'int32', 'float64', 'float32']:
+                dtype_colored = f"[green]{dtype}[/green]"
+            elif df[col].dtype == 'object':
+                dtype_colored = f"[yellow]{dtype}[/yellow]"
+            elif df[col].dtype == 'bool':
+                dtype_colored = f"[blue]{dtype}[/blue]"
+            else:
+                dtype_colored = f"[white]{dtype}[/white]"
+            
+            null_display = f"[red]{null_count}[/red]" if null_count > 0 else f"[dim]{null_count}[/dim]"
+            
             types_table.add_row(
+                str(idx),
                 col,
-                f"[{dtype_color}]{df[col].dtype}[/{dtype_color}]",
-                f"{df[col].notna().sum():,}",
-                f"{df[col].nunique():,}"
+                dtype_colored,
+                f"{non_null:,}",
+                null_display,
+                f"{unique_count:,}",
+                f"{unique_pct:.1f}%"
             )
         
-        if len(df.columns) > 15:
-            types_table.add_row("...", "...", "...", "...")
-        
         console.print(types_table)
+        console.print()
+        
+        all_cols_text = ", ".join([f"[cyan]{col}[/cyan]" for col in df.columns])
+        console.print(Panel(
+            f"[bold white]📋 Lista de Colunas:[/bold white]\n{all_cols_text}",
+            border_style="dim white",
+            box=box.ROUNDED
+        ))
         console.print()
         
     except FileNotFoundError:
