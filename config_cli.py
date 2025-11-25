@@ -17,33 +17,41 @@ from pathlib import Path
 
 console = Console()
 
-BANNER = """
-██╗░░░██╗███╗░░██╗██████╗░███████╗███╗░░██╗░█████╗░███╗░░██╗███╗░░██╗████████╗███████╗░██████╗
-██║░░░██║████╗░██║██╔══██╗██╔════╝████╗░██║██╔══██╗████╗░██║████╗░██║╚══██╔══╝██╔════╝██╔════╝
-██║░░░██║██╔██╗██║██████╦╝█████╗░░██╔██╗██║███████║██╔██╗██║██╔██╗██║░░░██║░░░█████╗░░╚█████╗░
-██║░░░██║██║╚████║██╔══██╗██╔══╝░░██║╚████║██╔══██║██║╚████║██║╚████║░░░██║░░░██╔══╝░░░╚═══██╗
-╚██████╔╝██║░╚███║██████╦╝███████╗██║░╚███║██║░░██║██║░╚███║██║░╚███║░░░██║░░░███████╗██████╔╝
-░╚═════╝░╚═╝░░╚══╝╚═════╝░╚══════╝╚═╝░░╚══╝╚═╝░░╚═╝╚═╝░░╚══╝╚═╝░░╚══╝░░░╚═╝░░░╚══════╝╚═════╝░
-
-██████╗░██████╗░░█████╗░░░░░░██╗███████╗██╗░░██╗████████╗  ░█████╗░░░░░█████╗░░░░░█████╗░
-██╔══██╗██╔══██╗██╔══██╗░░░░░██║██╔════╝██║░██╔╝╚══██╔══╝  ██╔══██╗░░░██╔══██╗░░░██╔══██╗
-██████╔╝██████╔╝██║░░██║░░░░░██║█████╗░░█████═╝░░░░██║░░░  ██║░░██║░░░██║░░██║░░░██║░░██║
-██╔═══╝░██╔══██╗██║░░██║██╗░░██║██╔══╝░░██╔═██╗░░░░██║░░░  ██║░░██║░░░██║░░██║░░░██║░░██║
-██║░░░░░██║░░██║╚█████╔╝╚█████╔╝███████╗██║░╚██╗░░░██║░░░  ╚█████╔╝██╗╚█████╔╝██╗╚█████╔╝
-╚═╝░░░░░╚═╝░░╚═╝░╚════╝░░╚════╝░╚══════╝╚═╝░░╚═╝░░░╚═╝░░░  ░╚════╝░╚═╝░╚════╝░╚═╝░╚════╝░
+BANNER = r"""
+ _   _       _                             _            ____            _      _    _   
+| | | |_ __ | |__   ___ _ __   __ _ _ __ | |_ ___ ___ |  _ \ _ __ ___ (_) ___| | _| |_ 
+| | | | '_ \| '_ \ / _ \ '_ \ / _` | '_ \| __/ _ / __|| |_) | '__/ _ \| |/ _ \ |/ / __|
+| |_| | | | | |_) |  __/ | | | (_| | | | | ||  __\__ \|  __/| | | (_) | |  __/   <| |_ 
+ \___/|_| |_|_.__/ \___|_| |_|\__,_|_| |_|\__\___|___/|_|   |_|  \___// |\___|_|\_\\__|
+                                                                      |__/               
+                        ___       ___       ___   
+                       / _ \     / _ \     / _ \  
+                      | | | |   | | | |   | | | | 
+                      | |_| | _ | |_| | _ | |_| | 
+                       \___/ (_) \___/ (_) \___/  
 """
 
 
 def show_banner():
     """Exibe o banner ASCII artístico"""
     console.clear()
-    banner_text = Text(BANNER, style="bold cyan")
-    console.print(banner_text)
+    
+    from rich.style import Style
+    banner_lines = BANNER.split('\n')
+    
+    colors = ["bright_cyan", "cyan", "blue", "bright_blue", "bright_magenta", "magenta"]
+    
+    for i, line in enumerate(banner_lines):
+        if line.strip():
+            color = colors[i % len(colors)]
+            console.print(line, style=f"bold {color}")
+    
     console.print(
         Panel(
-            "[italic]„ʇǝʇɥɔᴉɹǝƃ ɹᴉʍ ǝᴉʍ ʇʇo⅁ ʇǝʇɥɔᴉɹ ʇlǝzuǝuɹǝʇS ɯɹǝq∩„[/italic]",
-            style="dim white",
-            border_style="cyan",
+            "[italic bright_yellow]„ʇǝʇɥɔᴉɹǝƃ ɹᴉʍ ǝᴉʍ ʇʇo⅁ ʇǝʇɥɔᴉɹ ʇlǝzuǝuɹǝʇS ɯɹǝq∩„[/italic bright_yellow]\n"
+            "[dim white]Machine Learning Configuration Assistant[/dim white]",
+            style="on black",
+            border_style="bright_magenta",
             box=box.DOUBLE
         )
     )
@@ -61,6 +69,67 @@ def get_data_config():
         "[yellow]📁 Caminho do Dataset[/yellow]",
         default="data/raw/dataset.csv"
     )
+    
+    try:
+        import pandas as pd
+        df = pd.read_csv(data_path)
+        
+        console.print("\n")
+        console.print(Panel.fit(
+            "[bold green]✓ Dataset carregado com sucesso![/bold green]",
+            border_style="green"
+        ))
+        
+        info_table = Table(title="📊 Informações do Dataset", box=box.ROUNDED, border_style="magenta")
+        info_table.add_column("Métrica", style="yellow", justify="right")
+        info_table.add_column("Valor", style="cyan", justify="left")
+        
+        info_table.add_row("Linhas", f"{df.shape[0]:,}")
+        info_table.add_row("Colunas", f"{df.shape[1]:,}")
+        info_table.add_row("Memória", f"{df.memory_usage(deep=True).sum() / 1024**2:.2f} MB")
+        info_table.add_row("Valores Nulos", f"{df.isnull().sum().sum():,}")
+        
+        console.print(info_table)
+        console.print()
+        
+        preview_table = Table(title="👁️ Preview dos Dados (5 primeiras linhas)", box=box.SIMPLE, border_style="blue")
+        
+        for col in df.columns[:8]:  # Mostrar até 8 colunas
+            preview_table.add_column(col, style="white", overflow="fold")
+        
+        for idx, row in df.head(5).iterrows():
+            preview_table.add_row(*[str(val)[:20] for val in row.values[:8]])
+        
+        console.print(preview_table)
+        console.print()
+        
+        types_table = Table(title="🔍 Tipos de Dados das Colunas", box=box.ROUNDED, border_style="green")
+        types_table.add_column("Coluna", style="cyan")
+        types_table.add_column("Tipo", style="yellow")
+        types_table.add_column("Não-Nulos", style="green")
+        types_table.add_column("Únicos", style="magenta")
+        
+        for col in df.columns[:15]:  # Mostrar até 15 colunas
+            dtype_color = "green" if df[col].dtype in ['int64', 'float64'] else "yellow"
+            types_table.add_row(
+                col,
+                f"[{dtype_color}]{df[col].dtype}[/{dtype_color}]",
+                f"{df[col].notna().sum():,}",
+                f"{df[col].nunique():,}"
+            )
+        
+        if len(df.columns) > 15:
+            types_table.add_row("...", "...", "...", "...")
+        
+        console.print(types_table)
+        console.print()
+        
+    except FileNotFoundError:
+        console.print(f"[bold red]⚠️ Arquivo não encontrado: {data_path}[/bold red]")
+        console.print("[yellow]Continuando sem preview...[/yellow]\n")
+    except Exception as e:
+        console.print(f"[bold red]⚠️ Erro ao carregar dataset: {e}[/bold red]")
+        console.print("[yellow]Continuando sem preview...[/yellow]\n")
     
     target_column = Prompt.ask(
         "[yellow]🎯 Coluna Target (variável alvo)[/yellow]",
@@ -119,19 +188,19 @@ def get_model_config():
     console.print()
     
     models_input = Prompt.ask(
-        "[yellow]🎯 Modelos para treinar (separados por vírgula)[/yellow]",
+        "[bright_yellow]🎯 Modelos para treinar (separados por vírgula)[/bright_yellow]",
         default="rf,xgboost,lightgbm"
     )
     selected_models = [m.strip() for m in models_input.split(",")]
     
     n_folds = IntPrompt.ask(
-        "[yellow]🔄 Número de folds (Cross-Validation)[/yellow]",
+        "[bright_yellow]🔄 Número de folds (Cross-Validation)[/bright_yellow]",
         default=5
     )
     
     metric_choices = ["Accuracy", "AUC", "Recall", "Precision", "F1", "MAE", "RMSE", "R2"]
     metric = Prompt.ask(
-        "[yellow]📈 Métrica de avaliação principal[/yellow]",
+        "[bright_yellow]📈 Métrica de avaliação principal[/bright_yellow]",
         choices=metric_choices,
         default="Accuracy"
     )
@@ -153,17 +222,17 @@ def get_preprocessing_config():
     ))
     
     normalize = Confirm.ask(
-        "[yellow]🔧 Normalizar features numéricas?[/yellow]",
+        "[bright_yellow]🔧 Normalizar features numéricas?[/bright_yellow]",
         default=True
     )
     
     remove_outliers = Confirm.ask(
-        "[yellow]🚫 Remover outliers automaticamente?[/yellow]",
+        "[bright_yellow]🚫 Remover outliers automaticamente?[/bright_yellow]",
         default=False
     )
     
     handle_imbalance = Confirm.ask(
-        "[yellow]⚖️ Balancear classes (SMOTE)?[/yellow]",
+        "[bright_yellow]⚖️ Balancear classes (SMOTE)?[/bright_yellow]",
         default=False
     )
     
